@@ -10,8 +10,8 @@ namespace University.BAL.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        public UniversityContext context;
-        public DbSet<T> table;
+        internal UniversityContext context;
+        internal DbSet<T> table;
 
         public GenericRepository(UniversityContext _context)
         {

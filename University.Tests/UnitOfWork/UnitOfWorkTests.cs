@@ -4,6 +4,7 @@ using Moq;
 using University.DAL;
 using University.BAL.Repositories;
 using System;
+using System.Collections;
 
 namespace University.BAL.UnitOfWork.Tests
 {
@@ -16,7 +17,6 @@ namespace University.BAL.UnitOfWork.Tests
             dbContext = UniversityContextMock.SetupMock();
         }
 
-
         [TestMethod()]
         public void UnitOfWorkTest()
         {
@@ -25,13 +25,54 @@ namespace University.BAL.UnitOfWork.Tests
         }
 
         [TestMethod()]
+        public void UnitOfWorkTest_Student()
+        {
+            IUnitOfWork uow = new Repositories.UnitOfWork(dbContext.Object);
+            Assert.IsNotNull(uow.Student);
+        }
+
+        [TestMethod()]
+        public void UnitOfWorkTest_Course()
+        {
+            IUnitOfWork uow = new Repositories.UnitOfWork(dbContext.Object);
+            Assert.IsNotNull(uow.Course);
+        }
+
+        [TestMethod()]
+        public void UnitOfWorkTest_Department()
+        {
+            IUnitOfWork uow = new Repositories.UnitOfWork(dbContext.Object);
+            Assert.IsNotNull(uow.Department);
+        }
+
+        [TestMethod()]
+        public void UnitOfWorkTest_Enrollment()
+        {
+            IUnitOfWork uow = new Repositories.UnitOfWork(dbContext.Object);
+            Assert.IsNotNull(uow.Enrollment);
+        }
+
+        [TestMethod()]
+        public void UnitOfWorkTest_Instructor()
+        {
+            IUnitOfWork uow = new Repositories.UnitOfWork(dbContext.Object);
+            Assert.IsNotNull(uow.Instructor);
+        }
+
+        [TestMethod()]
         public void CommitTest()
         {
             IUnitOfWork uow = new Repositories.UnitOfWork(dbContext.Object);
             uow.Student.Insert(new Common.Models.Student { EnrollmentDate = DateTime.Now, FirstMidName = "Suraj", LastName = "Bangale" });
-            uow.Student.Save();
+            uow.Commit();
             dbContext.Verify(x => x.SaveChanges());
-            Assert.Fail();
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(ArgumentNullException), "dbContext should not be null")]
+        public void UnitOfWorkNullContext()
+        {
+            IUnitOfWork uow = new Repositories.UnitOfWork(null);
         }
     }
 }
