@@ -72,7 +72,9 @@
     <Compile Include="Mocks\MockHelper.cs" />
     <Compile Include="Mocks\UniversityContextMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\CourseRepositoryTests.cs" />
     <Compile Include="Repositories\GenericRepositoryTests.cs" />
+    <Compile Include="Repositories\StudentRepositoryTests.cs" />
     <Compile Include="UnitOfWork\UnitOfWorkTests.cs" />
   </ItemGroup>
   <ItemGroup>

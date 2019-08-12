@@ -4,7 +4,7 @@ using University.Common.Models;
 
 namespace University.BAL.Repositories
 {
-    public interface IStudentRepository : IDisposable, IGenericRepository<Student>
+    public interface IStudentRepository : IGenericRepository<Student>
     {
         IEnumerable<Student> GetStudents();
         Student GetStudentByID(int studentId);

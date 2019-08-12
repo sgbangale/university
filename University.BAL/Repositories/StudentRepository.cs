@@ -7,7 +7,7 @@ using University.DAL;
 
 namespace University.BAL.Repositories
 {
-    public class StudentRepository : GenericRepository<Student>, IStudentRepository, IDisposable
+    public class StudentRepository : GenericRepository<Student>, IStudentRepository
     {
         public StudentRepository(UniversityContext context) : base(context)
         {
@@ -36,27 +36,7 @@ namespace University.BAL.Repositories
 
         public void UpdateStudent(Student student)
         {
-            context.Entry(student).State = EntityState.Modified;
-        }
-
-        private bool disposed = false;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            context.SetModified(student);
         }
     }
 }

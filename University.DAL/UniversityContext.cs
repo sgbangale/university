@@ -15,6 +15,19 @@ namespace University.DAL
         public virtual DbSet<OfficeAssignment> OfficeAssignments { get; set; }
         public virtual DbSet<Person> People { get; set; }
 
+        public virtual void SetModified<T>(T entity) where T : class
+        {
+            Entry(entity).State = EntityState.Modified;
+        }
+
+        public virtual int ExecuteSqlCommand(string sql, params object[] parameters)
+        {
+            return Database.ExecuteSqlCommand(sql, parameters);
+        }
+        public virtual int ExecuteSqlCommand(TransactionalBehavior transactionalBehavior, string sql, params object[] parameters)
+        {
+            return Database.ExecuteSqlCommand(transactionalBehavior, sql, parameters);
+        }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GenericRepository.cs" />
     <Compile Include="Migrations\201908091004593_initial db setup.cs" />
     <Compile Include="Migrations\201908091004593_initial db setup.Designer.cs">
       <DependentUpon>201908091004593_initial db setup.cs</DependentUpon>

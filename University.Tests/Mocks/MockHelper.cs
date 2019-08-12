@@ -10,33 +10,28 @@ namespace University.Tests.Mocks
 {
     public class MockHelper
     {
-        public static DbSet<T> GetDbSetMock<T>(IEnumerable<T> items = null) where T : class
+        public static DbSet<T> GetDbSetMock<T>(List<T> items = null, Func<T, object> primaryKey = null) where T : class
         {
             if (items == null)
             {
-                items = new T[0];
+                items = new List<T>();
             }
 
             var dbSetMock = new Mock<DbSet<T>>();
             var q = dbSetMock.As<IQueryable<T>>();
 
-            q.Setup(x => x.GetEnumerator()).Returns(items.GetEnumerator);
+            q.Setup(x => x.GetEnumerator()).Returns(items.AsQueryable().GetEnumerator);
+            dbSetMock.Setup(d => d.Add(It.IsAny<T>())).Callback<T>((s) => items.Add(s));
+
+            if (primaryKey != null)
+            {
+                dbSetMock.Setup(set => set.Find(It.IsAny<object[]>())).Returns((object[] input) => items.SingleOrDefault(x => (int)primaryKey(x) == (int)input.First()));
+            }
+
+            dbSetMock.Setup(d => d.Remove(It.IsAny<T>())).Callback<T>((s) => items.Remove(s));
+            dbSetMock.Setup(d => d.AddRange(It.IsAny<IEnumerable<T>>())).Callback<IEnumerable<T>>((s) => items.AddRange(s));
 
             return dbSetMock.Object;
         }
-
-        //public static DbSet<T> GetQueryableMockDbSet<T>(List<T> sourceList) where T : class
-        //{
-        //    var queryable = sourceList.AsQueryable();
-
-        //    var dbSet = new Mock<DbSet<T>>();
-        //    dbSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(queryable.Provider);
-        //    dbSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(queryable.Expression);
-        //    dbSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(queryable.ElementType);
-        //    dbSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(() => queryable.GetEnumerator());
-        //    dbSet.Setup(d => d.Add(It.IsAny<T>())).Callback<T>((s) => sourceList.Add(s));
-
-        //    return dbSet.Object;
-        //}
     }
 }

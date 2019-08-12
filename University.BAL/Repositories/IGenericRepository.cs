@@ -10,5 +10,6 @@ namespace University.BAL.Repositories
         void Update(T obj);
         void Delete(object id);
         void Save();
+        void AddRange(IEnumerable<T> obj);
     }
 }
